@@ -15,25 +15,30 @@ public:
     void insert(HTNode *node) override {
         int key = node->key;
         int index = hashFunction(key);
-        auto &slot = table[index];
-        while (slot != nullptr) {
-            slot = slot->next;
+        for (;;) {
+            auto &slot = table[index];
+            if (slot == nullptr) {
+                slot = node;
+                return;
+            } else {
+                if (slot->key == key) {
+                    node->next = slot;
+                    slot = node;
+                    return;
+                } else {
+                    index = (index + 1) % size;
+                }
+            }
+
         }
-        slot = node;
     }
 
     int getMatchCount(int key) override {
         int index = hashFunction(key);
         auto slot = table[index];
-        int count = 0;
 
-        while (slot != nullptr) {
-            if (slot->key == key) {
-                count += 1;
-            }
-            slot = slot->next;
-        }
+        // todo: implement the linear probing search
 
-        return count;
+        return 0;
     }
 };

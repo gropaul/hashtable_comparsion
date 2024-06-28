@@ -41,25 +41,27 @@ void testHashTable(int N, int M, int VALUE_RANGE, int SEED, HashTable &hashTable
 
     clock_t end_probe = clock();
     double elapsed_probe = double(end_probe - start_probe) / CLOCKS_PER_SEC;
-
+    double total_elapsed = double(end_probe - start) / CLOCKS_PER_SEC;
     printf("Probe duration=%f\n", elapsed_probe);
+    printf("Total duration=%f\n", total_elapsed);
     printf("Found %d matches for %d probes\n", n_found, M);
 }
 
 
 int main() {
-    int N = 100; // Number of values to insert
-    int M = 10;  // Number of values to probe
-    int VALUE_RANGE = 10; // Range of random values
+    int N = 30000000; // Number of values to insert
+    int M = 10000000;  // Number of values to probe
+    int VALUE_RANGE = 1000000000; // Range of random values
     int SEED = 42;
 
     float loadFactor = 2.0; // Load factor for the hash table
-    int tableSize = (int) ((float) N / loadFactor); // Size of the hash table (number of slots
+    int tableSize = (int) ((float) N * loadFactor); // Size of the hash table (number of slots
 
     HashTable hashTable(tableSize);
     LPHashTable lpHashTable(tableSize);
 
     testHashTable(N, M, VALUE_RANGE, SEED, hashTable);
+    testHashTable(N, M, VALUE_RANGE, SEED, lpHashTable);
 
 }
 
